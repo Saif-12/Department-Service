@@ -1,12 +1,11 @@
 package com.departmentx.service;
 
-import java.util.Optional;
-
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 
 import com.departmentx.dto.DepartmentDto;
 import com.departmentx.entity.Department;
+import com.departmentx.exception.ResourceNotFoundException;
 import com.departmentx.repository.DepartmentRepository;
 
 @Service
@@ -38,7 +37,7 @@ public class DepartmentServiceImpl implements DepartmentService {
 	public DepartmentDto getDepartmentByCode(String departmentCode) {
 
 		Department department = departmentRepository.findByDepartmentCode(departmentCode)
-				.orElseThrow(() -> new RuntimeException("Department Code is not available"));
+				.orElseThrow(() -> new ResourceNotFoundException("Department", "id", departmentCode));
 
 		DepartmentDto departmentDto = modelMapper.map(department, DepartmentDto.class);
 		return departmentDto;
